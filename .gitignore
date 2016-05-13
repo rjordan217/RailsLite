@@ -1,0 +1,7 @@
+/spec
+.rspec
+
+.byebug_history
+
+cats.sql
+cats.db
