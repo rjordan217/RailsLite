@@ -1,11 +1,16 @@
 require_relative 'db_connection'
 require_relative 'searchable'
 require_relative 'validatable'
+require 'hooks'
 require 'active_support/inflector'
 
 class SQLObject
   extend Searchable
-  extend Validatable
+  
+  include Hooks
+  define_hook :before_save
+
+  include Validatable
 
   def self.columns
     @columns ||= DBConnection.execute2(<<-SQL).first.map(&:to_sym)
@@ -144,8 +149,8 @@ class SQLObject
   end
 
   def save
-    run_hook :before_save
-    if errors.empty?
+    self.run_hook :before_save
+    if errors.full_messages.empty?
       if id.nil?
         insert
       else
