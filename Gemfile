@@ -1,8 +1,8 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-ruby '2.1.2'
-
+gem 'byebug'
+gem 'rack'
 gem 'hooks'
-gem 'activesupport'
-gem 'rspec', '~> 3.1.0'
 gem 'sqlite3'
+gem "rspec", "~> 3.1.0"
+gem "activesupport"
