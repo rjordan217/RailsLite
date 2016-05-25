@@ -1,12 +1,14 @@
 require_relative 'db_connection'
 require_relative 'searchable'
 require_relative 'validatable'
+require_relative 'associatable'
 require 'hooks'
 require 'active_support/inflector'
 
 class SQLObject
   extend Searchable
-  
+  extend Associatable
+
   include Hooks
   define_hook :before_save
 

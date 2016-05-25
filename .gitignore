@@ -5,4 +5,5 @@
 
 cats.sql
 cats.db
-/lib/cat.rb
+/lib/active_record_lite/cat.rb
+/views

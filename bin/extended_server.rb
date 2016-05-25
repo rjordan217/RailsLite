@@ -1,7 +1,7 @@
 require 'rack'
 require 'json'
 require 'cgi'
-require_relative '../lib/controller_base'
+require_relative '../lib/rails_lite_server/controller_base'
 
 class MyController < ControllerBase
   def go

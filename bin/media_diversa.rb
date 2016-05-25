@@ -9,7 +9,7 @@ class MediaRender
     req = Rack::Request.new(env)
     res = Rack::Response.new
     if req.path =~ /\/public\/*/
-      phyllo_nom, extension = req.path.scan(/\/([^\/\s]*)\.(\w{3})/).flatten
+      fname, extension = req.path.scan(/\/([^\/\s]*)\.(\w{3})/).flatten
       res['Content-Type'] = case extension
       when 'jpg'
         'image/jpeg'
@@ -21,8 +21,8 @@ class MediaRender
         nil
       end
       if res['Content-Type']
-        phyllo = File.read("#{Dir.pwd}/public/#{phyllo_nom}.#{extension}")
-        res.write(phyllo)
+        file_content = File.read("#{Dir.pwd}/public/#{fname}.#{extension}")
+        res.write(file_content)
         res.status = 200
         res.finish
       else
