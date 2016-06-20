@@ -61,10 +61,35 @@ This module is built on the ActiveRecordLite::Relation class, which saves specif
 
 #### Validatable
 
+The Validatable module is responsible for defining both class and instance methods that allow validation callbacks to be run before a save is attempted. The module defines the `@callbacks` variable on the class in which it is implemented, while the `@errors` instance variable holds any error messages that occur when the validation callbacks are run. The following code snippet shows the `ClassMethods` submodule that are metaprogrammed onto classes implementing Validatable using the Ruby's Class#included method. This code snippet is what allows validations to be written in the same format as Rails, using the word `validates`.
+```ruby
+module ClassMethods
+  def validates(*attrs, options)
+    options.each do |key, val|
+      callbacks << case key
+      when :presence
+        Proc.new { |this| this.validate_presence(attrs,val) }
+      when :absence
+        Proc.new { |this| this.validate_absence(attrs, val) }
+      when :inclusion
+        Proc.new { |this| this.validate_inclusion(attrs,val) }
+      when :length
+        Proc.new { |this| this.validate_length(attrs,val) }
+      when :uniqueness
+        Proc.new { |this| this.validate_uniqueness(attrs,val) }
+      end
+    end
+  end
 
+  def callbacks
+    @callbacks ||= []
+  end
+end
+```
+This snippet also shows that the `@callbacks` variable stores an array of Procs to call later when the `:before_save` action is called. The methods that these Procs call will then either validate the SQLObject on which they are called, or add an error message to the `@errors` instance variable.
 
-### Views, Controllers, and Middleware
-
+<!-- ### Views, Controllers, and Middleware
+ -->
 
 
 ## Moving Forward
